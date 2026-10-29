@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- 1. Descrição principal corrigida -->
+  <meta name="description" content="Faça seu pedido no Sistema Delivery">
+  <title>SEC - Sistema Delivery</title>
+  <!-- 2. Etiquetas específicas para o WhatsApp ler -->
+  <meta property="og:title" content="Sistema Delivery">
+  <meta property="og:description" content="Faça seu pedido de forma rápida!">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+
+  <header class="container">
+
+    <div class="topbar">
+
+      <div id="datetime" class="datetime"></div>
+
+
+      <div class="brand">
+
+        <h1>
+          SEC - DELIVERY SISTEM
+        </h1>
+
+        <p>
+          O autêntico sabor nordestino na sua mesa!
+        </p>
+
+      </div>
+
+
+      <a id="wa-float-link" class="wa-float" href="https://wa.me/5581920036280" target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+
+    </div>
+
+
+    <button class="cta" id="openOrder">
+      Faça seu Pedido
+    </button>
+
+
+    <div class="notice">
+      Das 10:00 as 13:00h <br>
+      Entregamos de segunda a sexta
+    </div>
+
+  </header>
+
+
+  <main class="container" id="menu"></main>
+
+
+  <div class="container note">
+    Preparamos tudo com muito carinho!
+  </div>
+
+
+  <div class="container pix">
+
+    <strong>
+      Pagamento via PIX
+    </strong>
+
+    <br>
+
+
+    <code>
+    SOLICITE A NOSSA CHAVE
+  </code>
+
+  </div>
+
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <h3>
+        Venha almoçar conosco
+      </h3>
+
+      <div>
+        Bairro da Torre - Recife-PE
+      </div>
+
+
+      <a class="maps" href="https://maps.google.com/?q=Rua+Vermelha+02+Torre" target="_blank" rel="noopener">
+        Abrir no Google Maps
+      </a>
+
+
+    </div>
+
+  </footer>
+
+
+  <button class="manage" id="openAdmin">
+    Gerenciar ⚙️
+  </button>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- =====================================================
+     MODAL DO PEDIDO
+     ===================================================== -->
+
+  <div class="overlay hidden" id="orderOverlay">
+
+    <div class="modal">
+
+
+      <!-- PASSO 1 -->
+      <div id="orderStep1" class="step active">
+        <div class="card">
+          <h2>Faça seu Pedido</h2>
+
+          <div id="orderError1" class="error-msg" style="display: none;"></div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Nome Completo</label>
+              <input id="customerName" autocomplete="name" placeholder="Ex.: Carlos Silva">
+            </div>
+
+            <div class="field">
+              <label>Telefone</label>
+              <input id="customerPhone" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="(81) 99999-8888">
+            </div>
+
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Endereço de Entrega</label>
+              <input id="customerAddress" autocomplete="street-address"
+                placeholder="Rua, número, bairro, complemento...">
+            </div>
+
+            <div class="field">
+              <label>Quantidade de Marmitas</label>
+              <input id="mealCount" type="number" min="1" max="20" value="1">
+            </div>
+          </div>
+
+          <div class="delivery" style="margin: 15px 0; text-align: left;">
+            <label style="display: block; margin-bottom: 8px; cursor: pointer;">
+              <input type="radio" name="delivery" value="true" checked> Entrega em casa - R$ 5,00
+            </label>
+            <label style="display: block; cursor: pointer;">
+              <input type="radio" name="delivery" value="false"> Retirar no Restaurante - R$ 0,00
+            </label>
+          </div>
+
+          <div class="actions" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-secondary" id="closeOrder1" style="flex: 1;" onclick="location.reload()">
+              Cancelar
+            </button>
+
+            <button class="btn btn-success" id="toStep2" style="flex: 1;" onclick="avancarParaPasso2()">
+              Continuar
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PASSO 2 -->
+
+      <div id="orderStep2" class="step">
+
+        <h2>
+          Monte suas Marmitas
+        </h2>
+
+
+        <div id="orderError2" class="error hidden"></div>
+
+
+        <div id="marmitas"></div>
+
+
+        <div class="actions">
+
+          <button type="button" class="btn gray" id="backStep1">
+            Voltar
+          </button>
+
+
+          <button type="button" class="btn green" id="toStep3">
+            Encerrar e seguir
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASSO 3 -->
+      <div id="orderStep3" class="step">
+
+        <h2>Resumo do Pedido</h2>
+
+        <div id="orderSummary" class="order-text"></div>
+
+        <div id="finalTotal" class="total"></div>
+
+        <div class="actions">
+          <button class="btn red" id="cancelFinal">
+            Voltar
+          </button>
+
+          <button class="btn green" id="sendRestaurant">
+            Enviar Pedido ao Restaurante
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+     MODAL ADMINISTRATIVO
+     ===================================================== -->
+
+  <div class="overlay hidden" id="adminOverlay">
+
+    <div class="admin-modal">
+
+      <h2>
+        Gerenciar Cardápio
+      </h2>
+
+
+      <div id="adminError" class="error hidden"></div>
+
+
+      <!-- LOGIN -->
+
+      <div id="adminLogin">
+
+        <div class="field">
+
+          <label>
+            Usuário
+          </label>
+
+          <input id="adminUser" autocomplete="username" value="admin">
+
+        </div>
+
+
+        <div class="field" style="margin-top:10px">
+
+          <label>
+            Senha
+          </label>
+
+          <input id="adminPassword" type="password" autocomplete="current-password">
+
+        </div>
+
+
+        <div class="actions">
+
+          <button class="btn gray" id="closeAdminLogin">
+            Fechar
+          </button>
+
+
+          <button class="btn green" id="adminLoginBtn">
+            Entrar
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PAINEL -->
+
+      <div id="adminPanel" class="hidden">
+
+        <div id="adminItems" class="admin-grid"></div>
+
+
+        <div class="actions">
+
+          <button class="btn gray" id="adminClose">
+            Fechar
+          </button>
+
+
+          <button class="btn green" id="adminSave">
+            Salvar alterações
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+    'use strict';
+  </script>
+
+  <script sr
+
+</body>
+
+</html>
