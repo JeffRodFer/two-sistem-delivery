@@ -94,7 +94,7 @@
       </h3>
 
       <div>
-      Bairro da Torre - Recife-PE
+        Bairro da Torre - Recife-PE
       </div>
 
 
@@ -126,102 +126,54 @@
 
 
       <!-- PASSO 1 -->
-
       <div id="orderStep1" class="step active">
+        <div class="card">
+          <h2>Faça seu Pedido</h2>
 
-        <h2>
-          Faça seu Pedido
-        </h2>
+          <div id="orderError1" class="error-msg" style="display: none;"></div>
 
+          <div class="form-grid">
+            <div class="field">
+              <label>Nome Completo</label>
+              <input id="customerName" autocomplete="name" placeholder="Ex.: Carlos Silva">
+            </div>
 
-        <div id="orderError1" class="error hidden"></div>
+            <div class="field">
+              <label>Telefone</label>
+              <input id="customerPhone" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="(81) 99999-8888">
+            </div>
 
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Endereço de Entrega</label>
+              <input id="customerAddress" autocomplete="street-address"
+                placeholder="Rua, número, bairro, complemento...">
+            </div>
 
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              Nome Completo
-            </label>
-
-            <input id="customerName" autocomplete="name">
-
+            <div class="field">
+              <label>Quantidade de Marmitas</label>
+              <input id="mealCount" type="number" min="1" max="20" value="1">
+            </div>
           </div>
 
-
-          <div class="field">
-
-            <label>
-              Telefone
+          <div class="delivery" style="margin: 15px 0; text-align: left;">
+            <label style="display: block; margin-bottom: 8px; cursor: pointer;">
+              <input type="radio" name="delivery" value="true" checked> Entrega em casa - R$ 5,00
             </label>
-
-            <input id="customerPhone" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="(81) 99999-8888">
-
+            <label style="display: block; cursor: pointer;">
+              <input type="radio" name="delivery" value="false"> Retirar no Restaurante - R$ 0,00
+            </label>
           </div>
 
+          <div class="actions" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-secondary" id="closeOrder1" style="flex: 1;" onclick="location.reload()">
+              Cancelar
+            </button>
 
-          <div class="field full">
-
-            <label>
-              Endereço de Entrega
-            </label>
-
-            <input id="customerAddress" autocomplete="street-address">
-
+            <button class="btn btn-success" id="toStep2" style="flex: 1;" onclick="avancarParaPasso2()">
+              Continuar
+            </button>
           </div>
-
-
-          <div class="field">
-
-            <label>
-              Quantidade de Marmitas
-            </label>
-
-            <input id="mealCount" type="number" min="1" max="20" value="1">
-
-          </div>
-
-
         </div>
-
-
-        <div class="delivery">
-
-          <label>
-
-            <input type="radio" name="delivery" value="true" checked>
-
-            Entrega em casa - R$ 5,00
-
-          </label>
-
-
-          <label>
-
-            <input type="radio" name="delivery" value="false">
-
-            Retirar no Restaurante - R$ 0,00
-
-          </label>
-
-        </div>
-
-
-        <div class="actions">
-
-          <button class="btn gray" id="closeOrder1">
-            Cancelar
-          </button>
-
-
-          <button class="btn green" id="toStep2">
-            Continuar
-          </button>
-
-        </div>
-
       </div>
 
 
