@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Sec - Sistem Delivery </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1 id="storeName">Restaurante do Irmão</h1>
+    <p>Faça o seu pedido com facilidade e rapidez!</p>
+    <button class="admin-btn-top" onclick="abrirPainelAdmin()">Admin</button>
+  </header>
+
+  <div class="container">
+
+    <!-- PASSO 1: DADOS INICIAIS -->
+    <div id="step1" class="step active">
+      <div class="card">
+        <h2>Identificação e Entrega</h2>
+        
+        <div class="field">
+          <label>Seu Nome</label>
+          <input type="text" id="clientName" placeholder="Ex.: Carlos Silva">
+        </div>
+
+        <div class="field">
+          <label>WhatsApp (com DDD)</label>
+          <input type="tel" id="clientPhone" placeholder="Ex.: 81999999999">
+        </div>
+
+        <div class="field">
+          <label>Tipo de Pedido</label>
+          <select id="deliveryType" onchange="toggleAddress()">
+            <option value="delivery">Delivery (Entrega em domicílio)</option>
+            <option value="retirada">Retirada no Local</option>
+          </select>
+        </div>
+
+        <div class="field" id="addressField">
+          <label>Endereço de Entrega</label>
+          <textarea id="clientAddress" placeholder="Rua, número, bairro, complemento..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Quantidade de Marmitas</label>
+          <input type="number" id="marmitaCount" min="1" max="10" value="1">
+        </div>
+
+        <div id="step1Error" class="error-msg">Preencha todos os campos obrigatórios corretamente.</div>
+
+        <button class="btn" onclick="goToStep2()">Continuar para o Cardápio</button>
+      </div>
+    </div>
+
+    <!-- PASSO 2: MONTAGEM DAS MARMITAS -->
+    <div id="step2" class="step">
+      <div class="card">
+        <h2>Monte suas Marmitas</h2>
+        <div id="marmitasContainer"></div>
+
+        <div id="orderError2" class="error-msg"></div>
+
+        <button class="btn" onclick="goToStep3()">Encerrar e seguir</button>
+        <button class="btn btn-secondary" onclick="setStep(1)">Voltar</button>
+      </div>
+    </div>
+
+    <!-- PASSO 3: RESUMO E ENVIO -->
+    <div id="step3" class="step">
+      <div class="card">
+        <h2>Resumo do Pedido</h2>
+        <pre id="orderSummaryText"></pre>
+        <h3 id="finalTotalText" style="margin: 15px 0; color: var(--primary-dark);"></h3>
+
+        <button class="btn btn-success" onclick="sendToWhatsApp()">Enviar Pedido no WhatsApp</button>
+        <button class="btn btn-secondary" onclick="setStep(2)">Voltar e Ajustar</button>
+      </div>
+    </div>
+
+    <!-- PASSO ADMIN -->
+    <div id="step-admin" class="step">
+      <div class="card">
+        <h2>Painel Administrativo - Gestão de Estoque e Preços</h2>
+        <div id="adminMsg" class="success-msg"></div>
+        <div style="overflow-x: auto; max-height: 400px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço (R$)</th>
+                <th>Estoque</th>
+                <th>Disp.</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+        <button class="btn btn-success" style="margin-top: 15px;" onclick="salvarAlteracoesAdmin()">Salvar Tudo</button>
+        <button class="btn" style="background-color: #34495e; margin-top: 10px;" onclick="fazerEstornoAdmin()">Estornar Produto (Devolver ao Estoque)</button>
+        <button class="btn btn-secondary" onclick="setStep(1)">Sair para a Loja</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
