@@ -29,7 +29,7 @@ loadMenu();
 // Gestão de Passos (Ecrãs)
 function setStep(step) {
   document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-  
+
   if (step === 'admin') {
     document.getElementById('step-admin').classList.add('active');
     renderAdminTable();
@@ -60,7 +60,7 @@ function iniciarPedido() {
     }
     return;
   }
-  
+
   const errEl = document.getElementById('step1Error');
   if (errEl) errEl.style.display = 'none';
 
@@ -105,27 +105,27 @@ function renderMarmitas() {
       <div class="section-title" style="font-size: 1.1rem; margin-top: 15px;">Guarnições <span style="font-size:0.8rem; color:#666">(máx. 4)</span></div>
       <div class="items-grid">
         ${available(['Guarnições']).map(x => {
-          const esgotado = !x.disponivel || x.estoque <= 0;
-          return `
+    const esgotado = !x.disponivel || x.estoque <= 0;
+    return `
             <label class="item-box ${esgotado ? 'esgotado' : ''}">
               <span>${esc(x.nome)}</span>
               <input type="checkbox" data-kind="g" data-index="${i}" data-id="${x.id}" ${esgotado ? 'disabled' : ''} ${m.guarnicoes.includes(x.id) ? 'checked' : ''}>
             </label>
           `;
-        }).join('')}
+  }).join('')}
       </div>
 
       <div class="section-title" style="font-size: 1.1rem; margin-top: 15px;">Proteínas <span style="font-size:0.8rem; color:#666">(escolha 1 ou 2)</span></div>
       <div class="items-grid">
         ${available(['Proteínas']).map(x => {
-          const esgotado = !x.disponivel || x.estoque <= 0;
-          return `
+    const esgotado = !x.disponivel || x.estoque <= 0;
+    return `
             <label class="item-box protein ${esgotado ? 'esgotado' : ''}">
               <span>${esc(x.nome)}</span>
               <input type="checkbox" data-kind="p" data-index="${i}" data-id="${x.id}" ${esgotado ? 'disabled' : ''} ${m.proteinas.includes(x.id) ? 'checked' : ''}>
             </label>
           `;
-        }).join('')}
+  }).join('')}
       </div>
 
       <div class="field" style="margin-top: 15px;">
@@ -225,7 +225,7 @@ async function goToStep3() {
     calculatedOrderResult = { total: totalGeral, mensagem: resumoMensagem };
     document.getElementById('orderSummaryText').textContent = resumoMensagem;
     document.getElementById('finalTotalText').textContent = `Total: ${money(totalGeral)}`;
-    
+
     setStep(3);
   } catch (err) {
     if (errEl) {
@@ -254,22 +254,22 @@ function abrirPainelAdmin() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ senha })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.autorizado) {
-      setStep('admin');
-    } else {
-      alert("Senha incorreta!");
-    }
-  })
-  .catch(() => alert("Erro ao conectar com o servidor."));
+    .then(res => res.json())
+    .then(data => {
+      if (data.autorizado) {
+        setStep('admin');
+      } else {
+        alert("Senha incorreta!");
+      }
+    })
+    .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
 async function renderAdminTable() {
   await loadMenu();
   const tbody = document.getElementById('adminTableBody');
   if (!tbody) return;
-  
+
   tbody.innerHTML = menuData.map(item => `
     <tr>
       <td>${item.id}</td>
@@ -334,4 +334,42 @@ async function fazerEstornoAdmin() {
   } catch (err) {
     alert("Erro de conexão.");
   }
+}
+
+function avancarParaPasso2() {
+  const nome = document.getElementById('customerName').value.trim();
+  const telefone = document.getElementById('customerPhone').value.trim();
+  const endereco = document.getElementById('customerAddress').value.trim();
+  const qtdMarmitas = parseInt(document.getElementById('mealCount').value) || 1;
+
+  const entregaRadio = document.querySelector('input[name="delivery"]:checked');
+  const isDelivery = entregaRadio ? entregaRadio.value === 'true' : true;
+
+  const errorDiv = document.getElementById('orderError1');
+
+  if (!nome || !telefone || (isDelivery && !endereco)) {
+    if (errorDiv) {
+      errorDiv.textContent = 'Por favor, preencha todos os campos obrigatórios (Nome, Telefone e Endereço).';
+      errorDiv.style.display = 'block';
+    }
+    return;
+  }
+
+  if (errorDiv) {
+    errorDiv.style.display = 'none';
+  }
+
+  orderState.nome = nome;
+  orderState.telefone = telefone;
+  orderState.entrega = isDelivery ? 'delivery' : 'retirada';
+  orderState.address = endereco;
+
+  orderState.marmitas = Array.from({ length: qtdMarmitas }, () => ({
+    guarnicoes: [],
+    proteinas: [],
+    observacao: ''
+  }));
+
+  renderMarmitas();
+  setStep(2); // Muda para o passo 2 das marmitas
 }
